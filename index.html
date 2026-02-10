@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>PG English | Faith & Growth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="PG English - English learning with vocabulary, speaking topics, games, and faith-based inspiration."
+    />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-logo">PG</div>
+          <div class="brand-text">
+            <span class="brand-title">PG English</span>
+            <span class="brand-subtitle">Pray • Grow • English</span>
+          </div>
+        </div>
+        <nav class="nav">
+          <button class="nav-link active" data-section="home">Home / 主页</button>
+          <button class="nav-link" data-section="lessons">Lessons / 每期课程</button>
+          <button class="nav-link" data-section="vocab">Vocabulary Lab / 词汇记忆</button>
+          <button class="nav-link" data-section="speaking">Speaking Topics / 口语</button>
+          <button class="nav-link" data-section="games">Word Games / 词汇游戏</button>
+        </nav>
+        <footer class="sidebar-footer">
+          <p class="tiny">
+            “Small daily improvements lead to stunning long‑term results.”
+          </p>
+        </footer>
+      </aside>
+
+      <main class="main">
+        <!-- HOME -->
+        <section id="home" class="section section--active">
+          <header class="section-header">
+            <h1 class="section-title">Welcome to PG English</h1>
+            <p class="section-subtitle">
+              Learn English with purpose, courage and faith.
+            </p>
+          </header>
+
+          <div class="grid grid-2">
+            <div class="card card-quote">
+              <h2 class="card-title">今日励志 · Daily Inspiration</h2>
+              <p id="daily-quote-en" class="quote-en"></p>
+              <p id="daily-quote-zh" class="quote-zh"></p>
+              <p id="daily-quote-ref" class="quote-ref"></p>
+            </div>
+
+            <div class="card">
+              <h2 class="card-title">开始你的学习旅程</h2>
+              <ul class="feature-list">
+                <li><strong>每期课程</strong>：词汇、口语话题、idioms、哲理、小群灵修经文。</li>
+                <li><strong>词汇记忆实验室</strong>：用小测验 + 进度记录，扎实掌握高频词。</li>
+                <li><strong>口语 Topic Bank</strong>：常见口语题库＋思路提示，帮助你敢开口。</li>
+                <li><strong>词汇小游戏</strong>：选择题小游戏，轻松测自己的掌握度。</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="grid grid-3 home-stats" id="home-stats"></div>
+        </section>
+
+        <!-- LESSONS -->
+        <section id="lessons" class="section">
+          <header class="section-header">
+            <h1 class="section-title">Lesson Series · 每期课程</h1>
+            <p class="section-subtitle">
+              每一期都是一个主题：词汇 + 口语 + idioms + 哲理 + Bible + 其他补充。
+            </p>
+          </header>
+
+          <div id="lesson-list" class="list"></div>
+          <article id="lesson-detail" class="lesson-detail card hidden"></article>
+        </section>
+
+        <!-- VOCABULARY LAB -->
+        <section id="vocab" class="section">
+          <header class="section-header">
+            <h1 class="section-title">Vocabulary Lab · 词汇记忆实验室</h1>
+            <p class="section-subtitle">
+              通过小步练习 + 本地进度记录（localStorage），一点点夯实词汇。
+            </p>
+          </header>
+
+          <div class="card vocab-panel">
+            <div id="vocab-progress" class="vocab-progress"></div>
+            <div id="vocab-card" class="vocab-card">
+              <p class="muted">点击 “下一词汇” 开始练习。</p>
+            </div>
+            <div class="vocab-actions">
+              <button id="btn-next-word" class="btn btn-primary">下一词汇</button>
+              <button id="btn-toggle-meaning" class="btn btn-secondary">显示/隐藏 中文 & 例句</button>
+              <button id="btn-mark-known" class="btn btn-ghost">我已经掌握 ✓</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SPEAKING TOPICS -->
+        <section id="speaking" class="section">
+          <header class="section-header">
+            <h1 class="section-title">Speaking Topics · 口语题库</h1>
+            <p class="section-subtitle">
+              常考/常见话题，附思路关键词，帮助你用英文表达真实的自己。
+            </p>
+          </header>
+
+          <div class="grid grid-2">
+            <div id="speaking-list" class="list"></div>
+            <article id="speaking-detail" class="card speaking-detail hidden"></article>
+          </div>
+        </section>
+
+        <!-- GAMES -->
+        <section id="games" class="section">
+          <header class="section-header">
+            <h1 class="section-title">Word Challenge · 词汇小游戏</h1>
+            <p class="section-subtitle">
+              根据中文/解释，选出正确的英文。轻松检测一下今天的词汇掌握度。
+            </p>
+          </header>
+
+          <div class="card game-card">
+            <div id="game-status" class="game-status"></div>
+            <div id="game-question" class="game-question"></div>
+            <div id="game-options" class="game-options"></div>
+            <div class="game-actions">
+              <button id="btn-next-question" class="btn btn-primary">下一题</button>
+              <button id="btn-reset-game" class="btn btn-ghost">重新开始</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
+
