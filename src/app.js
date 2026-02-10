@@ -33,15 +33,14 @@ function setupNavigation() {
   });
 }
 
-// -------- 首页：励志语 & 简单统计 --------
+// -------- Home: quote & stats --------
 function setupHome() {
   if (!inspirationQuotes || inspirationQuotes.length === 0) return;
   const index = new Date().getDate() % inspirationQuotes.length;
   const q = inspirationQuotes[index];
 
   $("#daily-quote-en").textContent = q.en;
-  $("#daily-quote-zh").textContent = q.zh;
-  $("#daily-quote-ref").textContent = q.ref;
+  $("#daily-quote-ref").textContent = q.ref || "";
 
   const statsContainer = $("#home-stats");
   const totalLessons = lessons.length;
@@ -49,9 +48,9 @@ function setupHome() {
   const totalTopics = speakingTopics.length;
 
   const stats = [
-    { number: totalLessons, label: "Lesson series · 课程期数" },
-    { number: totalWords, label: "Core words · 核心词汇" },
-    { number: totalTopics, label: "Speaking topics · 口语话题" },
+    { number: totalLessons, label: "Lessons" },
+    { number: totalWords, label: "Vocabulary words" },
+    { number: totalTopics, label: "Speaking topics" },
   ];
 
   statsContainer.innerHTML = stats
@@ -102,7 +101,7 @@ function renderLessonDetail(lesson, detailEl) {
   const vocabList = lesson.vocabulary
     .map(
       (v) =>
-        `<li><strong>${v.word}</strong> (${v.phonetic}) – ${v.meaningZh}</li>`
+        `<li><strong>${v.word}</strong>${v.phonetic ? ` ${v.phonetic}` : ""} — ${v.meaning}</li>`
     )
     .join("");
 
@@ -126,22 +125,17 @@ function renderLessonDetail(lesson, detailEl) {
   detailEl.innerHTML = `
     <h2>${lesson.title}</h2>
     <div class="lesson-meta">
-      <span class="badge"><span class="badge-dot"></span> Level: ${
-        lesson.level
-      }</span>
-      <span class="badge badge-soft"><span class="badge-dot"></span> Focus: ${lesson.focus.join(
-        ", "
-      )}</span>
+      <span class="badge"><span class="badge-dot"></span> ${lesson.level}</span>
+      <span class="badge badge-soft"><span class="badge-dot"></span> ${lesson.focus.join(", ")}</span>
     </div>
-    <p class="muted">包含：词汇 · 口语题目 · idioms · 哲理 · Bible 经文 · 其他建议</p>
 
     <div class="lesson-columns">
       <section>
-        <h3 class="lesson-block-title">Vocabulary · 词汇</h3>
+        <h3 class="lesson-block-title">Vocabulary</h3>
         <ul class="lesson-list">${vocabList}</ul>
       </section>
       <section>
-        <h3 class="lesson-block-title">Speaking Topics · 口语话题</h3>
+        <h3 class="lesson-block-title">Speaking Topics</h3>
         <ul class="lesson-list">${topics}</ul>
       </section>
       <section>
@@ -149,7 +143,7 @@ function renderLessonDetail(lesson, detailEl) {
         <ul class="lesson-list">${idioms}</ul>
       </section>
       <section>
-        <h3 class="lesson-block-title">Philosophy · 哲理</h3>
+        <h3 class="lesson-block-title">Reflection</h3>
         <ul class="lesson-list">${philosophy}</ul>
       </section>
       <section>
@@ -157,7 +151,7 @@ function renderLessonDetail(lesson, detailEl) {
         <ul class="lesson-list">${bible}</ul>
       </section>
       <section>
-        <h3 class="lesson-block-title">Others · 其他</h3>
+        <h3 class="lesson-block-title">More</h3>
         <ul class="lesson-list">${others}</ul>
       </section>
     </div>
