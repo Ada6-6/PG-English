@@ -201,7 +201,7 @@ function setupVocabLab() {
     const percent = total === 0 ? 0 : Math.round((mastered / total) * 100);
 
     progressEl.innerHTML = `
-      <span>已掌握 ${mastered} / ${total} 词汇</span>
+      <span>Mastered ${mastered} / ${total}</span>
       <div class="progress-bar">
         <div class="progress-fill" style="width: ${percent}%"></div>
       </div>
@@ -210,21 +210,21 @@ function setupVocabLab() {
 
   function renderWord() {
     if (!currentWord) {
-      cardEl.innerHTML = `<p class="muted">点击 “下一词汇” 开始练习。</p>`;
+      cardEl.innerHTML = `<p class="muted">Tap “Next word” to start.</p>`;
       return;
     }
 
     const base = `
       <div class="vocab-word">${currentWord.word}</div>
-      <div class="vocab-phonetic">${currentWord.phonetic}</div>
+      ${currentWord.phonetic ? `<div class="vocab-phonetic">${currentWord.phonetic}</div>` : ""}
     `;
 
     const extra = showMeaning
       ? `
-        <div class="vocab-meaning">${currentWord.meaningZh}</div>
+        <div class="vocab-meaning">${currentWord.meaning}</div>
         <div class="vocab-example">${currentWord.example}</div>
       `
-      : `<p class="muted">点击 “显示/隐藏 中文 & 例句” 查看释义。</p>`;
+      : `<p class="muted">Tap “Show / hide meaning & example” to reveal.</p>`;
 
     cardEl.innerHTML = base + extra;
   }
@@ -250,7 +250,7 @@ function setupVocabLab() {
     const record = progress[currentWord.word] || { count: 0, mastered: false };
     const updated = {
       count: record.count + 1,
-      mastered: record.count + 1 >= 3, // 至少点“掌握”3 次，标记为 mastered
+      mastered: record.count + 1 >= 3,
     };
     progress[currentWord.word] = updated;
     saveVocabProgress(progress);
@@ -301,15 +301,13 @@ function renderSpeakingDetail(topic, detailEl) {
     <h2>${topic.title}</h2>
     <p class="muted">${topic.question}</p>
 
-    <h3 class="speaking-section-title">思路提示 · Prompts</h3>
+    <h3 class="speaking-section-title">Prompts</h3>
     <ul class="speaking-bullets">${prompts}</ul>
 
-    <h3 class="speaking-section-title">Useful phrases · 常用表达</h3>
+    <h3 class="speaking-section-title">Useful phrases</h3>
     <ul class="speaking-bullets">${phrases}</ul>
 
-    <p class="muted" style="margin-top: 0.6rem;">
-      小建议：先用中文在脑中回答一遍，然后试着用英文、慢慢说出来，不要怕停顿。
-    </p>
+    <p class="muted" style="margin-top: 0.6rem;">Answer in your head first, then try saying it in English. It’s okay to pause.</p>
   `;
 }
 
@@ -348,7 +346,7 @@ function setupGame() {
       vocabularyPool[Math.floor(Math.random() * vocabularyPool.length)];
     const options = getRandomOptions(word, vocabularyPool, 4);
     gameState.question = word;
-    questionEl.textContent = `Which word matches this meaning? ${word.meaningZh}`;
+    questionEl.textContent = `Which word matches this meaning? ${word.meaning}`;
 
     optionsEl.innerHTML = "";
     options.forEach((opt) => {
@@ -394,15 +392,13 @@ function setupGame() {
   btnReset?.addEventListener("click", () => {
     gameState = { question: null, score: 0, total: 0 };
     updateStatus();
-    questionEl.textContent =
-      "点击 “下一题” 开始小游戏。每道题按照中文选择对应的英文单词。";
+    questionEl.textContent = "Tap “Next question” to start. Pick the word that matches the meaning.";
     optionsEl.innerHTML = "";
   });
 
   gameState = { question: null, score: 0, total: 0 };
   updateStatus();
-  questionEl.textContent =
-    "点击 “下一题” 开始小游戏。每道题按照中文选择对应的英文单词。";
+  questionEl.textContent = "Tap “Next question” to start. Pick the word that matches the meaning.";
 }
 
 // -------- 初始化 --------
