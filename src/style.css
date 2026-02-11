@@ -412,6 +412,24 @@ body {
   line-height: 1.5;
 }
 
+.lesson-list li {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.lesson-list li::before {
+  content: "•";
+  color: var(--slate-500);
+  margin-right: 0.2rem;
+  font-size: 1em;
+}
+
 .lesson-list li + li {
   margin-top: 0.25rem;
 }
@@ -465,11 +483,88 @@ body {
   box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
 }
 
+.vocab-word-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .vocab-word {
   font-size: 1.4rem;
   font-weight: 700;
   color: #0f172a;
   letter-spacing: -0.02em;
+}
+
+/* ----- Speak / pronunciation buttons ----- */
+.speak-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--primary-bg);
+  color: var(--primary);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.speak-btn:hover {
+  background: var(--primary);
+  color: var(--white);
+  transform: scale(1.05);
+}
+
+.speak-btn:active {
+  transform: scale(0.98);
+}
+
+.speak-icon {
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+
+.speak-btn-card {
+  width: 40px;
+  height: 40px;
+}
+
+.speak-btn-card .speak-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.speak-btn-inline {
+  width: 28px;
+  height: 28px;
+  margin-left: 0.25rem;
+}
+
+.speak-btn-inline .speak-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.game-option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.game-option-word {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
 }
 
 .vocab-phonetic {

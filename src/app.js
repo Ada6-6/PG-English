@@ -5,7 +5,6 @@ import {
   vocabularyPool,
 } from "./data.js";
 
-// 简单工具函数
 function $(selector) {
   return document.querySelector(selector);
 }
@@ -13,6 +12,48 @@ function $(selector) {
 function $all(selector) {
   return document.querySelectorAll(selector);
 }
+
+// -------- Pronunciation (Web Speech API) --------
+function escapeHtmlAttr(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+const speakerIcon = `<svg class="speak-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`;
+
+function speakText(text, lang = "en-US") {
+  if (!text || typeof text !== "string") return;
+  if (!("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.trim());
+  u.lang = lang;
+  u.rate = 0.9;
+  u.volume = 1;
+  window.speechSynthesis.speak(u);
+}
+
+// Global click: any .speak-btn with data-speak triggers pronunciation
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".speak-btn");
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const text = btn.getAttribute("data-speak");
+  if (text) speakText(text);
+});
 
 // -------- Navigation --------
 function setupNavigation() {
@@ -112,16 +153,16 @@ function renderLessonDetail(lesson, detailEl) {
   const vocabList = lesson.vocabulary
     .map(
       (v) =>
-        `<li><strong>${v.word}</strong>${v.phonetic ? ` ${v.phonetic}` : ""} — ${v.meaning}</li>`
+        `<li><strong>${escapeHtml(v.word)}</strong>${v.phonetic ? ` ${v.phonetic}` : ""} — ${escapeHtml(v.meaning)} <button type="button" class="speak-btn" data-speak="${escapeHtmlAttr(v.word)}" aria-label="Listen to pronunciation">${speakerIcon}</button></li>`
     )
     .join("");
 
-  const topics = lesson.topics.map((t) => `<li>${t}</li>`).join("");
+  const topics = lesson.topics.map((t) => `<li>${escapeHtml(t)}</li>`).join("");
 
   const idioms = lesson.idioms
     .map(
       (i) =>
-        `<li><strong>${i.phrase}</strong> – ${i.meaning} <span class="muted">(${i.example})</span></li>`
+        `<li><strong>${escapeHtml(i.phrase)}</strong> – ${escapeHtml(i.meaning)} <span class="muted">(${escapeHtml(i.example)})</span> <button type="button" class="speak-btn" data-speak="${escapeHtmlAttr(i.phrase)}" aria-label="Listen to pronunciation">${speakerIcon}</button></li>`
     )
     .join("");
 
@@ -226,7 +267,10 @@ function setupVocabLab() {
     }
 
     const base = `
-      <div class="vocab-word">${currentWord.word}</div>
+      <div class="vocab-word-row">
+        <span class="vocab-word">${escapeHtml(currentWord.word)}</span>
+        <button type="button" class="speak-btn speak-btn-card" data-speak="${escapeHtmlAttr(currentWord.word)}" aria-label="Listen to pronunciation">${speakerIcon}</button>
+      </div>
       ${currentWord.phonetic ? `<div class="vocab-phonetic">${currentWord.phonetic}</div>` : ""}
     `;
 
@@ -363,8 +407,15 @@ function setupGame() {
     options.forEach((opt) => {
       const btn = document.createElement("button");
       btn.className = "game-option";
-      btn.textContent = opt.word;
-      btn.addEventListener("click", () => {
+      btn.innerHTML = `<span class="game-option-word">${escapeHtml(opt.word)}</span> <button type="button" class="speak-btn speak-btn-inline" data-speak="${escapeHtmlAttr(opt.word)}" aria-label="Listen">${speakerIcon}</button>`;
+      btn.addEventListener("click", (e) => {
+        if (e.target.closest(".speak-btn")) {
+          e.preventDefault();
+          e.stopPropagation();
+          const text = e.target.closest(".speak-btn").getAttribute("data-speak");
+          if (text) speakText(text);
+          return;
+        }
         handleAnswer(btn, opt.word === word.word);
       });
       optionsEl.appendChild(btn);
@@ -388,7 +439,8 @@ function setupGame() {
     } else {
       button.classList.add("wrong");
       $all(".game-option").forEach((btn) => {
-        if (btn.textContent === gameState.question.word) {
+        const wordEl = btn.querySelector(".game-option-word");
+        if (wordEl && wordEl.textContent === gameState.question.word) {
           btn.classList.add("correct");
         }
       });
