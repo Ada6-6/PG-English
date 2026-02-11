@@ -14,22 +14,33 @@ function $all(selector) {
   return document.querySelectorAll(selector);
 }
 
-// -------- 导航切换 --------
+// -------- Navigation --------
 function setupNavigation() {
   const navLinks = $all(".nav-link");
+  const bottomNavLinks = $all(".bottom-nav-link");
   const sections = $all(".section");
 
-  navLinks.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const target = btn.dataset.section;
+  function switchSection(target) {
+    navLinks.forEach((b) => b.classList.remove("active"));
+    bottomNavLinks.forEach((b) => b.classList.remove("active"));
+    
+    const activeNavLink = Array.from(navLinks).find((b) => b.dataset.section === target);
+    const activeBottomNavLink = Array.from(bottomNavLinks).find((b) => b.dataset.section === target);
+    
+    if (activeNavLink) activeNavLink.classList.add("active");
+    if (activeBottomNavLink) activeBottomNavLink.classList.add("active");
 
-      navLinks.forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      sections.forEach((section) => {
-        section.classList.toggle("section--active", section.id === target);
-      });
+    sections.forEach((section) => {
+      section.classList.toggle("section--active", section.id === target);
     });
+  }
+
+  navLinks.forEach((btn) => {
+    btn.addEventListener("click", () => switchSection(btn.dataset.section));
+  });
+
+  bottomNavLinks.forEach((btn) => {
+    btn.addEventListener("click", () => switchSection(btn.dataset.section));
   });
 }
 

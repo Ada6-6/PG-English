@@ -9,11 +9,14 @@
 html {
   -webkit-tap-highlight-color: transparent;
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html,
 body {
   height: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -22,6 +25,7 @@ body {
   color: #0f172a;
   font-size: 1rem;
   line-height: 1.5;
+  position: relative;
 }
 
 .app {
@@ -98,6 +102,8 @@ body {
   font-family: inherit;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nav-link:hover {
@@ -126,8 +132,10 @@ body {
 /* ----- Main ----- */
 .main {
   padding: 1.5rem 1.75rem 2rem;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: #f8fafc;
+  -webkit-overflow-scrolling: touch;
 }
 
 .section {
@@ -272,6 +280,8 @@ body {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   text-align: left;
   font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .list-item:hover {
@@ -451,6 +461,8 @@ body {
   gap: 0.3rem;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   white-space: nowrap;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-primary {
@@ -556,6 +568,8 @@ body {
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.2s ease, background 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .game-option:hover {
@@ -584,68 +598,280 @@ body {
   display: none !important;
 }
 
+/* ----- Bottom navigation (mobile) ----- */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 0.5rem 0;
+  box-shadow: 0 -4px 24px rgba(15, 23, 42, 0.08);
+  z-index: 100;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.25rem;
+}
+
+.bottom-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.5rem 0.25rem;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.7rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  min-height: 64px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-nav-link.active {
+  color: #3b82f6;
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2;
+}
+
+.bottom-nav-link.active .nav-icon {
+  stroke-width: 2.5;
+}
+
 /* ----- Mobile ----- */
 @media (max-width: 768px) {
   .app {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: 1fr;
+    min-height: 100vh;
   }
 
   .sidebar {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    box-shadow: 0 2px 16px rgba(15, 23, 42, 0.06);
-  }
-
-  .brand {
-    flex-shrink: 0;
-  }
-
-  .nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.3rem;
-    flex: 1;
-    justify-content: flex-end;
-  }
-
-  .nav-link {
-    padding: 0.4rem 0.7rem;
-    font-size: 0.8rem;
-  }
-
-  .sidebar-footer {
     display: none;
   }
 
+  .bottom-nav {
+    display: grid;
+  }
+
   .main {
-    padding: 1rem 1rem 1.5rem;
+    padding: 1rem 1rem calc(1.5rem + env(safe-area-inset-bottom));
+    min-height: calc(100vh - 70px);
+    padding-bottom: calc(1.5rem + 70px + env(safe-area-inset-bottom));
+  }
+
+  .section-header {
+    margin-bottom: 1rem;
   }
 
   .section-title {
-    font-size: 1.35rem;
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .section-subtitle {
+    font-size: 0.95rem;
+    margin-top: 0.4rem;
+  }
+
+  .grid {
+    gap: 1rem;
+  }
+
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
   }
 
   .card {
-    padding: 1.1rem 1.2rem;
+    padding: 1.25rem 1.15rem;
+    border-radius: 16px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .feature-list {
+    font-size: 0.92rem;
+    gap: 0.6rem;
+  }
+
+  .quote-en {
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  .stat-number {
+    font-size: 1.75rem;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+  }
+
+  .list-item {
+    padding: 1.1rem 1.15rem;
+    border-radius: 14px;
+    min-height: 60px;
+    justify-content: center;
+  }
+
+  .list-item-title {
+    font-size: 1rem;
+  }
+
+  .list-item-subtitle {
+    font-size: 0.85rem;
+    margin-top: 0.15rem;
+  }
+
+  .lesson-detail h2 {
+    font-size: 1.35rem;
+  }
+
+  .lesson-columns {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .lesson-block-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .lesson-list {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .vocab-panel {
+    gap: 1rem;
+  }
+
+  .vocab-progress {
+    font-size: 0.9rem;
+  }
+
+  .progress-bar {
+    height: 10px;
+  }
+
+  .vocab-card {
+    padding: 1.5rem 1.25rem;
+    min-height: 160px;
+    border-radius: 16px;
+  }
+
+  .vocab-word {
+    font-size: 1.6rem;
+  }
+
+  .vocab-phonetic {
+    font-size: 0.95rem;
+  }
+
+  .vocab-meaning {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .vocab-example {
+    font-size: 0.9rem;
+    line-height: 1.6;
   }
 
   .vocab-actions {
     flex-direction: column;
+    gap: 0.65rem;
   }
 
   .btn {
     width: 100%;
     justify-content: center;
-    padding: 0.6rem 1rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+    min-height: 48px;
+    border-radius: 12px;
+  }
+
+  .speaking-detail h2 {
+    font-size: 1.2rem;
+  }
+
+  .speaking-section-title {
+    font-size: 0.88rem;
+    margin-top: 1rem;
+  }
+
+  .speaking-bullets {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .game-card {
+    gap: 1.25rem;
+  }
+
+  .game-status {
+    font-size: 0.95rem;
+  }
+
+  .game-question {
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+
+  .game-options {
+    flex-direction: column;
+    gap: 0.65rem;
   }
 
   .game-option {
-    flex: 1 1 calc(50% - 0.25rem);
-    min-width: 0;
+    width: 100%;
+    padding: 0.85rem 1.15rem;
+    font-size: 0.95rem;
+    min-height: 52px;
+    border-radius: 12px;
+    text-align: left;
+  }
+
+  .game-actions {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .muted {
+    font-size: 0.9rem;
+  }
+}
+
+/* Safe area for iPhone notch */
+@supports (padding: max(0px)) {
+  .bottom-nav {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+@media (max-width: 768px) {
+  * {
+    max-width: 100%;
+  }
+
+  img, video, iframe {
+    max-width: 100%;
+    height: auto;
   }
 }
