@@ -17,18 +17,18 @@ function $all(selector) {
 // -------- Navigation --------
 function setupNavigation() {
   const navLinks = $all(".nav-link");
-  const bottomNavLinks = $all(".bottom-nav-link");
+  const topNavLinks = $all(".top-nav-link");
   const sections = $all(".section");
 
   function switchSection(target) {
     navLinks.forEach((b) => b.classList.remove("active"));
-    bottomNavLinks.forEach((b) => b.classList.remove("active"));
-    
+    topNavLinks.forEach((b) => b.classList.remove("active"));
+
     const activeNavLink = Array.from(navLinks).find((b) => b.dataset.section === target);
-    const activeBottomNavLink = Array.from(bottomNavLinks).find((b) => b.dataset.section === target);
-    
+    const activeTopNavLink = Array.from(topNavLinks).find((b) => b.dataset.section === target);
+
     if (activeNavLink) activeNavLink.classList.add("active");
-    if (activeBottomNavLink) activeBottomNavLink.classList.add("active");
+    if (activeTopNavLink) activeTopNavLink.classList.add("active");
 
     sections.forEach((section) => {
       section.classList.toggle("section--active", section.id === target);
@@ -39,7 +39,7 @@ function setupNavigation() {
     btn.addEventListener("click", () => switchSection(btn.dataset.section));
   });
 
-  bottomNavLinks.forEach((btn) => {
+  topNavLinks.forEach((btn) => {
     btn.addEventListener("click", () => switchSection(btn.dataset.section));
   });
 }
