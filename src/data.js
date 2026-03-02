@@ -5,6 +5,7 @@ export const lessons = [
     id: "2025-02-03-chores",
     title: "Feb 3 · Chores & Decluttering",
     level: "Intermediate",
+    teachers: "Cloris & Janis",
     focus: ["chores", "decluttering", "life application"],
     vocabulary: [
       { word: "filthy", phonetic: "/ˈfɪlθi/", meaning: "very dirty", example: "The kitchen floor was absolutely filthy after the party." },

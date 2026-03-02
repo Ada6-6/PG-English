@@ -126,14 +126,17 @@ function setupLessons() {
 
   listEl.innerHTML = lessons
     .map(
-      (lesson) => `
+      (lesson) => {
+        const teachers = lesson.teachers || "Cloris & Janis";
+        return `
       <button class="list-item" data-lesson-id="${lesson.id}">
         <div class="list-item-title">${lesson.title}</div>
         <div class="list-item-subtitle">
-          Level: ${lesson.level} · Focus: ${lesson.focus.join(", ")}
+          Teachers: ${teachers} · Level: ${lesson.level} · ${lesson.focus.join(", ")}
         </div>
       </button>
-    `
+    `;
+      }
     )
     .join("");
 
@@ -143,6 +146,8 @@ function setupLessons() {
     const id = item.dataset.lessonId;
     const lesson = lessons.find((l) => l.id === id);
     if (!lesson) return;
+    const lessonsNav = document.querySelector('[data-section="lessons"]');
+    if (lessonsNav) lessonsNav.click();
     renderLessonDetail(lesson, detailEl);
   });
 }
@@ -174,11 +179,13 @@ function renderLessonDetail(lesson, detailEl) {
 
   const others = lesson.others.map((o) => `<li>${o}</li>`).join("");
 
+  const teachers = lesson.teachers || "Cloris & Janis";
   detailEl.innerHTML = `
     <h2>${lesson.title}</h2>
     <div class="lesson-meta">
       <span class="badge"><span class="badge-dot"></span> ${lesson.level}</span>
       <span class="badge badge-soft"><span class="badge-dot"></span> ${lesson.focus.join(", ")}</span>
+      <span class="badge lesson-teachers">Teachers: ${teachers}</span>
     </div>
 
     <div class="lesson-columns">
